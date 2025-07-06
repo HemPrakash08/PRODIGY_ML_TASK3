@@ -21,3 +21,25 @@ def load_images_from_folder(folder, limit=1000, img_size=64):
 
 X, y = load_images_from_folder('path_to_train_folder', limit=2000)
 X = X / 255.0  # normalize
+
+from sklearn.svm import SVC
+from sklearn.metrics import classification_report, accuracy_score
+
+model = SVC(kernel='linear')  # or 'rbf'
+model.fit(X_train, y_train)
+
+# Predict
+y_pred = model.predict(X_test)
+
+# Evaluate
+print("Accuracy:", accuracy_score(y_test, y_pred))
+print(classification_report(y_test, y_pred, target_names=['Cat', 'Dog']))
+
+import matplotlib.pyplot as plt
+
+for i in range(5):
+    img = X_test[i].reshape(64, 64)
+    plt.imshow(img, cmap='gray')
+    plt.title("Predicted: " + ("Dog" if y_pred[i] else "Cat"))
+    plt.axis('off')
+    plt.show()
